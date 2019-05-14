@@ -2,39 +2,12 @@
 (function() {
     // console.log('FIRE');
     var addIcons = function() {
-            var addIcon = function(item, icon, userId, screenName, before) {
+            var addIcon = function(item, icon, screenName) {
                 if (item) {
-                    if (before) item.before(icon);
-                    else item.after(icon);
-
+                    item.addClass('fs-processed-icon');
+                    item.append(icon);
                     icon.click(function(evt) {
-                        // if (userId) {
-                        //     // __cr.sendMessage({
-                        //     //     method: 'userId',
-                        //     //     id: userId,
-                        //     //     action: 'click-arrow'
-                        //     // });
-                        //     console.log({
-                        //         method: 'userId',
-                        //         id: userId,
-                        //         screenName: screenName,
-                        //         action: 'click-arrow'
-                        //     });
-                        // } else if (screenName) {
-                        //     // __cr.sendMessage({
-                        //     //     method: 'screenName',
-                        //     //     id: screenName,
-                        //     //     action: 'click-arrow'
-                        //     // });
-                        //     console.log({
-                        //         method: 'screenName',
-                        //         id: screenName,
-                        //         screenName: screenName,
-                        //         action: 'click-arrow'
-                        //     });
-                        // }
-
-                        var redirectWindow = window.open('http://firesauce.tv/'+screenName, '_blank');
+                        var redirectWindow = window.open('http://fire-sauce.herokuapp.com/'+screenName, '_blank');
                         redirectWindow.location;
 
                         evt.stopPropagation();
@@ -42,39 +15,19 @@
                     });
                 }
             };
-            $('#stream-items-id').find('> li:not(.fs-processed-icon)').addClass('fs-processed-icon').find('.js-user-profile-link').each(function() {
-                var link = $(this),
-                    userId = link.attr('data-user-id'),
-                    href = link.attr('href'),
-                    screenName = (href) ? href.replace('/', '') : '',
-                    icon = $('<span><span class="fs-icon fs-icon-logo"></span></span>'),
-                    avatar = link.find('.avatar:not(.size24,.size32)');
 
-                addIcon(avatar, icon, userId, screenName);
-            });
+            var userId = window.location.pathname.split('/')[1] || '';
+            var appendEl = $("a[href='/"+userId+"/header_photo']").parent().children().eq(1).children().eq(1);
+            var iconEl = $('<span><span class="fs-icon fs-icon-logo"></span></span>');
 
-            // new twitter home page
-            $('.ProfileTweet:not(.fs-processed-icon)').addClass('fs-processed-icon').each(function() {
-                var tweet = $(this),
-                    link = tweet.find('a.ProfileTweet-originalAuthorLink'),
-                    userId = link.attr('data-user-id'),
-                    href = link.attr('href'),
-                    screenName = (href) ? href.replace('/', '') : '',
-                    icon = $('<span class="fs-left"><span class="fs-icon fs-icon-logo"></span></span>'),
-                    avatar = link.find('img.ProfileTweet-avatar');
+            try {
+                var nameEl = appendEl[0].children[0].children[0].children[0];
+                appendEl = $(nameEl);
+            } catch(e) {}
 
-                addIcon(avatar, icon, userId, screenName);
-            });
-
-            $('.ProfileCard:not(.fs-processed-icon)').addClass('fs-processed-icon').each(function() {
-                var card = $(this),
-                    userId = card.attr('data-user-id'),
-                    link = card.find('.ProfileNameTruncated-link'),
-                    screenName = link.attr('href').replace('/', ''),
-                    icon = $('<span class="fs-left"><span class="fs-icon fs-icon-logo"></span></span>');
-
-                addIcon(link, icon, userId, screenName, true);
-            });
+            if (!appendEl.hasClass('fs-processed-icon') && !appendEl.find('.fs-processed-icon').length) {
+                addIcon(appendEl, iconEl, userId);
+            }
 
             setTimeout(function() {
                 addIcons();
@@ -112,7 +65,7 @@
 
     // add icons and set listeners
     addIcons();
-    setListeners();
+    // setListeners();
 
     $('.js-user-profile-link').on('click', function(evt) {
         var el = $(this),
