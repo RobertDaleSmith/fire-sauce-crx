@@ -1,7 +1,7 @@
 {
   "author": "RobertDaleSmith",
   "name": "Fire Sauce TV",
-  "version": "0.3",
+  "version": "0.6",
   "permissions": [
     "tabs", "contextMenus", "storage", "*://fire-sauce.herokuapp.com/*", "*://www.twitter.com/*"
   ],
