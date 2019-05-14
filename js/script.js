@@ -29,6 +29,28 @@
                 addIcon(appendEl, iconEl, userId);
             }
 
+            //legacy twitter
+            $('#stream-items-id').find('> li:not(.fs-processed-icon)').addClass('fs-processed-icon').find('.js-user-profile-link').each(function() {
+                var link = $(this),
+                    userId = link.attr('data-user-id'),
+                    href = link.attr('href'),
+                    screenName = (href) ? href.replace('/', '') : '',
+                    icon = $('<span><span class="fs-icon fs-icon-logo"></span></span>'),
+                    avatar = link.find('.avatar:not(.size24,.size32)');
+
+                addIcon(avatar, icon, userId, screenName);
+            });
+
+            $('.ProfileHeaderCard').each(function() {
+                var card = $(this),
+                    appendEl = card.find('.ProfileHeaderCard-name'),
+                    iconEl = $('<span><span class="fs-icon fs-icon-logo"></span></span>');
+
+                if (!appendEl.hasClass('fs-processed-icon')) {
+                    addIcon(appendEl, iconEl, userId, userId, true);
+                }
+            });
+
             setTimeout(function() {
                 addIcons();
             }, 1000);
