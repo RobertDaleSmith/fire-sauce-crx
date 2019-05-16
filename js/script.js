@@ -7,7 +7,7 @@
                     item.addClass('fs-processed-icon');
                     item.append(icon);
                     icon.click(function(evt) {
-                        var redirectWindow = window.open('http://fire-sauce.herokuapp.com/'+screenName, '_blank');
+                        var redirectWindow = window.open('http://firesauce.net/'+screenName, '_blank');
                         redirectWindow.location;
 
                         evt.stopPropagation();
